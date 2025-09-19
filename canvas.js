@@ -4,20 +4,19 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
-class Ball {
-    constructor(x, y, dy, radius, color) {
+class Laser {
+    constructor(x, y, dy, width, height, color) {
         this.x = x;
         this.y = y;
         this.dy = dy;  
-        this.radius = radius;
+        this.width = width;
+        this.height = height;
         this.color = color;
     }
 
     draw() {
-        c.beginPath();
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         c.fillStyle = this.color;
-        c.fill();
+        c.fillRect(this.x, this.y, this.width, this.height);
     }
 
     update() {
@@ -26,31 +25,31 @@ class Ball {
     }
 }
 
-var balls = [];
+var lasers = [];
 
 for (let i = 0; i < 15; i++) {
-    let radius = 20;
-    let x = Math.random() * (canvas.width - radius * 2) + radius; 
+    let height = 40;
+    let width = 5;
+    let x = Math.random() * (canvas.width - width); 
     let y = Math.random() * -canvas.height; 
     let dy = Math.random() * 4 + 2; 
     let color = "white";
-    balls.push(new Ball(x, y, dy, radius, color));
+    lasers.push(new Laser(x, y, dy, width, height, color));
 }
 
 function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
 
-    balls.forEach(ball => {
-        ball.update();
+    lasers.forEach(laser => {
+        laser.update();
 
-        if (ball.y - ball.radius > canvas.height) {
-            ball.y = -ball.radius; 
-            ball.x = Math.random() * (canvas.width - ball.radius * 2) + ball.radius; 
-            ball.dy = Math.random() * 4 + 2; 
+        if (lasers.y > canvas.height) {
+            lasers.y = -lasers.height; 
+            lasers.x = Math.random() * (canvas.width - laser.width); 
+            lasers.dy = Math.random() * 4 + 2; 
         }
     });
 }
 
 animate();
-
