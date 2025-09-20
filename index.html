@@ -2,14 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="icon" type="image/png" href="Google-Noto-Emoji-Travel-Places-42598-rocket.512.png">
+
     <style>
         canvas {
            border: 1px solid black;
            background: black;
         }
-        #startBtn {
+        #gameTitle {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 48px;
+      font-weight: bold;
+      color: yellow;
+      text-align: center;
+      z-index: 2; 
+    }
+
+    #instructions {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: white;
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.5;
+      z-index: 2; 
+    }
+      #startBtn {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -25,6 +50,12 @@
     </style>
 </head>
 <body>
+    <h1 id="gameTitle"> Dodge The Obstacles </h1>
+    <p id="instructions">
+    Use the <b>Left</b> ⬅️ and <b>Right</b> ➡️ arrow keys to move.<br>
+    Avoid the falling lasers and survive as long as you can!<br>
+    Your score increases every time you dodge.
+    </p>
     <button id="startBtn">Start Game</button>
     <canvas></canvas>
     <script src="canvas.js"></script>

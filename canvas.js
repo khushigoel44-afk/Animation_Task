@@ -11,7 +11,8 @@ class Star {
         this.y = y;
         this.radius = radius;
         this.alpha = Math.random(); 
-        this.fade = Math.random() * 0.02 + 0.005; 
+        this.fade = Math.random() * 0.005 + 0.001;  
+
     }
 
     draw() {
@@ -37,9 +38,16 @@ var stars = [];
 for (let i = 0; i < 200; i++) {   
     let x = Math.random() * canvas.width;
     let y = Math.random() * canvas.height;
-    let radius = Math.random() * 1.5;  
+
+    let radius;
+    let rand = Math.random();
+    if (rand < 0.6) radius = Math.random() * 2;      
+    else if (rand < 0.9) radius = Math.random() * 4; 
+    else radius = Math.random() * 6;                 
+
     stars.push(new Star(x, y, radius));
 }
+
 
 
 class Spaceship {
@@ -127,6 +135,7 @@ for (let i = 0; i < 30; i++) {
 }
 
 let score = 0;
+let speedMultiplier = 1;
 let gameOver = false;
 
 function detectCollision(laser, player) {
@@ -159,13 +168,16 @@ if (Math.random() < 0.02) {
     let width = 5;
     let x = Math.random() * (canvas.width - width); 
     let y = -height; 
-    let dy = Math.random() * 4 + 2; 
+    let dy = (Math.random() * 4 + 2) * speedMultiplier; 
     let color = "white";
     lasers.push(new Laser(x, y, dy, width, height, color));
 }
 
 
     spaceship.update();
+
+    speedMultiplier += 0.0005; 
+
 
     lasers.forEach((laser, index) => {
     laser.update();
@@ -178,6 +190,7 @@ if (Math.random() < 0.02) {
             score++;
             laser.y = -laser.height; 
             laser.x = Math.random() * (canvas.width - laser.width); 
+            laser.dy = (Math.random() * 4 + 2) * speedMultiplier;
             laser.dy = Math.random() * 4 + 2; 
         }
     });
@@ -193,6 +206,8 @@ if (Math.random() < 0.02) {
 
     startBtn.addEventListener("click", () => {
       gameStarted = true;
+      document.getElementById("gameTitle").style.display = "none";
+      document.getElementById("instructions").style.display = "none";
       startBtn.style.display = "none"; 
       animate();
     });
