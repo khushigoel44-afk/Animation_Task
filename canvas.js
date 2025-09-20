@@ -4,6 +4,43 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
+class Star {
+    constructor(x, y, radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.alpha = Math.random(); 
+        this.fade = Math.random() * 0.02 + 0.005; 
+    }
+
+    draw() {
+        c.save();
+        c.globalAlpha = this.alpha;  
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        c.fillStyle = "white";
+        c.fill();
+        c.restore();
+    }
+
+    update() {
+        this.alpha += this.fade;
+        if (this.alpha <= 0 || this.alpha >= 1) {
+            this.fade = -this.fade; 
+        }
+        this.draw();
+    }
+}
+
+var stars = [];
+for (let i = 0; i < 200; i++) {   
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height;
+    let radius = Math.random() * 1.5;  
+    stars.push(new Star(x, y, radius));
+}
+
+
 class Spaceship {
     constructor() {
         this.width = 50;
@@ -91,6 +128,8 @@ for (let i = 0; i < 50; i++) {
 function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => star.update());
 
 if (Math.random() < 0.02) {  
     let height = 40;
