@@ -1,4 +1,5 @@
 var canvas = document.querySelector('canvas');
+var startBtn = document.getElementById("startBtn");
 console.log("Script loaded successfully!");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -138,6 +139,7 @@ function detectCollision(laser, player) {
 }
 
 function animate() {
+    if (!gameStarted) return;
     if (gameOver) {
         c.fillStyle = "red";
         c.font = "48px Arial";
@@ -179,9 +181,20 @@ if (Math.random() < 0.02) {
             laser.dy = Math.random() * 4 + 2; 
         }
     });
+
+    c.fillStyle = "white";
+    c.font = "24px Arial";
+    c.fillText("Dodge The Obstacles", 20, 30);
+
     c.fillStyle = "yellow";
     c.font = "20px Arial";
-    c.fillText("Score: " + score, 20, 30);
+    c.fillText("Score: " + score, 20, 60);
 }
+
+    startBtn.addEventListener("click", () => {
+      gameStarted = true;
+      startBtn.style.display = "none"; 
+      animate();
+    });
 
 animate();
