@@ -115,7 +115,7 @@ class Laser {
 
 var lasers = [];
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 30; i++) {
     let height = 40;
     let width = 5;
     let x = Math.random() * (canvas.width - width); 
@@ -125,7 +125,28 @@ for (let i = 0; i < 50; i++) {
     lasers.push(new Laser(x, y, dy, width, height, color));
 }
 
+let score = 0;
+let gameOver = false;
+
+function detectCollision(laser, player) {
+    return (
+        laser.x < player.x + player.width &&
+        laser.x + laser.width > player.x &&
+        laser.y < player.y + player.height &&
+        laser.y + laser.height > player.y
+    );
+}
+
 function animate() {
+    if (gameOver) {
+        c.fillStyle = "red";
+        c.font = "48px Arial";
+        c.fillText("GAME OVER", canvas.width / 2 - 120, canvas.height / 2);
+        c.fillStyle = "white";
+        c.font = "24px Arial";
+        c.fillText("Final Score: " + score, canvas.width / 2 - 70, canvas.height / 2 + 40);
+        return;
+    }
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -144,15 +165,23 @@ if (Math.random() < 0.02) {
 
     spaceship.update();
 
-    lasers.forEach(laser => {
-        laser.update();
+    lasers.forEach((laser, index) => {
+    laser.update();
 
-        if (lasers.y > canvas.height) {
-            lasers.y = -lasers.height; 
-            lasers.x = Math.random() * (canvas.width - laser.width); 
-            lasers.dy = Math.random() * 4 + 2; 
+    if (detectCollision(laser, spaceship)) {
+            gameOver = true;
+        }
+
+        if (laser.y > canvas.height) {
+            score++;
+            laser.y = -laser.height; 
+            laser.x = Math.random() * (canvas.width - laser.width); 
+            laser.dy = Math.random() * 4 + 2; 
         }
     });
+    c.fillStyle = "yellow";
+    c.font = "20px Arial";
+    c.fillText("Score: " + score, 20, 30);
 }
 
 animate();
